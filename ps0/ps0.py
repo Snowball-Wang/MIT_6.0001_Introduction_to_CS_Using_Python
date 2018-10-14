@@ -3,7 +3,7 @@
 #       Filename: ps0.py
 #       Author: Snowball Wang
 #       Mail: wjq1996@mail.ustc.edu.cn
-#       Description: ---
+#       Description: Solution to problem set 0
 #       Created on: 2018-10-11 09:24:48
 #*******************************************************
 from numpy import log2
