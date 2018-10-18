@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+#*******************************************************
+#       Filename: ps1/ps1c.py
+#       Author: Snowball Wang
+#       Mail: wjq1996@mail.ustc.edu.cn
+#       Description: Solution to ps1, Part C
+#       Created on: 2018-10-18 09:11:48
+#*******************************************************
+
 # Input the starting annual salary
 annual_salary = float(input('Enter the starting salary: '))
 
