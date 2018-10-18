@@ -3,7 +3,7 @@
 #       Filename: ps1b.py
 #       Author: Snowball Wang
 #       Mail: wjq1996@mail.ustc.edu.cn
-#       Description: ---
+#       Description: Solution to ps1, Part B
 #       Created on: 2018-10-14 17:18:34
 #*******************************************************
 # Input the starting annual salary
