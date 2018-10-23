@@ -136,52 +136,63 @@ def hangman(secret_word):
     Follows the other limitations detailed in the problem write-up.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
+    # Initialize some parameters
     guesses_remaining = 6
     warnings_remaining = 3
     total_score = 0
     letters_guessed = []
+    vowels = ['a', 'e', 'i', 'o']
     print("Welcome to the game Hangman!")
     print("I am thinking of a word that is {} letters long.".format(len(secret_word)))
     print("You have {} warnings left.".format(warnings_remaining))
 
+
     while True:
         print("------------")
+        # If guesses remaining is less than zero, you fail the game
         if guesses_remaining < 0:
             print("Sorry, you ran out of guesses. The word was else.")
             break
+        # If guesses remaining is greater equal than zero, go on the game
         else:
             print("You have {} guesses left.".format(guesses_remaining))
             print("Available letters: {}".format(get_available_letters(letters_guessed)))
             input_letter = input("Please guess a letter: ").lower()
+            # Judge whether the input letter is alpha
             if input_letter.isalpha():
                 if input_letter in letters_guessed:
                     if warnings_remaining > 0:
                         warnings_remaining -= 1
+                        print("Oops! You've already guessed that letter.You now have {} warnings left: \n{}".format(warnings_remaining, output))
                     else:
                         warnings_remaining = 0
                         guesses_remaining -= 1
-                    print("Oops! You've already guessed that letter.You now have {} warnings left: \n{}".format(warnings_remaining, output))
+                        print("Oops! You've already guessed that letter.You now have no warnings left so you lose one guess: \n{}".format(output))
                 else:
                     letters_guessed.append(input_letter)
+                    output = get_guessed_word(secret_word, letters_guessed)
+                    if input_letter in secret_word:
+                        print("Good guess: {}".format(output))
+                        if is_word_guessed(secret_word, letters_guessed):
+                            total_score = guesses_remaining * len(set(secret_word))
+                            print("-------------")
+                            print("Congratulation, you won!\nYour total score for this game is: {}".format(total_score))
+                            break
+                    else:
+                        if input_letter in vowels:
+                            guesses_remaining -= 2
+                        else:
+                            guesses_remaining -= 1
+                        print("Oops! That letter is not in my word: {}".format(output))
+            # When the input letter is not an alpha characther
             else:
                 if warnings_remaining > 0:
                     warnings_remaining -= 1
+                    print("Oops! That is not a valid letter. You have {} warnings left: {}".format(warnings_remaining, output))
                 else:
                     warnings_remaining = 0
                     guesses_remaining -= 1
-                print("Oops! That is not a valid letter. You have {} warnings left: {}".format(warnings_remaining, output))
-
-            output = get_guessed_word(secret_word, letters_guessed)
-            if input_letter in secret_word:
-                print("Good guess: {}".format(output))
-                if is_word_guessed(secret_word, letters_guessed):
-                    total_score = guesses_remaining * len(set(secret_word))
-                    print("Congratulation, you won!\nYour total score for this game is: {}".format(total_score))
-                    break
-            else:
-                print("Oops! That letter is not in my word: {}".format(output))
-                guesses_remaining -= 1
-
+                    print("Oops! That is not a valid letter. You have no warnings left: {}".format(output))
 
 
 
@@ -268,8 +279,10 @@ if __name__ == "__main__":
     # To test part 2, comment out the pass line above and
     # uncomment the following two lines.
 
-    secret_word = 'tact'
-    #secret_word = choose_word(wordlist)
+    # Test case
+    #secret_word = 'tact'
+
+    secret_word = choose_word(wordlist)
     hangman(secret_word)
 
 ###############
