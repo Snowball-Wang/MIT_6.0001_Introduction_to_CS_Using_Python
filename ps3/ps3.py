@@ -16,7 +16,7 @@ CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
 HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
-    'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
+        'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10, '*': 0
 }
 
 # -----------------------------------
@@ -94,7 +94,7 @@ def get_word_score(word, n):
     first_component = 0
     word = word.lower()
     for char in word:
-        first_component += SCRABBLE_LETTER_VALUES[char]
+        first_component += SCRABBLE_LETTER_VALUES.get(char, 0)
 
     second_component = 7 * len(word) - 3 * (n - len(word))
     if second_component > 1:
@@ -144,7 +144,9 @@ def deal_hand(n):
     """
 
     hand={}
-    num_vowels = int(math.ceil(n / 3))
+    num_vowels = int(math.ceil(n / 3)) - 1
+
+    hand['*'] = hand.get('*', 0) + 1
 
     for i in range(num_vowels):
         x = random.choice(VOWELS)
@@ -209,20 +211,38 @@ def is_valid_word(word, hand, word_list):
     word_list_copy = word_list[:]
     word = word.lower()
 
-    if word in word_list_copy:
-        for char in word:
-            if char not in hand_copy.keys():
-                return False
-            else:
-                hand_copy[char] -= 1
-                if hand_copy[char] < 0:
-                    return False
-                else:
-                    continue
-        return True
-
+    # Find all words that match with word contains '*'
+    word_match = []
+    if '*' in word:
+        for char in VOWELS:
+            word_match.append(word.replace('*', char))
     else:
+        word_match.append(word)
+
+    # Judge whether word in word_match is in word_list
+    state = False
+    for w in word_match:
+        if w in word_list:
+            state = True
+
+    if not state:
         return False
+
+    # Judge whether hand includes all the letter of word
+    for char in word:
+        if char not in hand_copy.keys():
+            return False
+        else:
+            hand_copy[char] -= 1
+            if hand_copy[char] < 0:
+                return False
+    return True
+
+
+
+
+
+
 
 #
 # Problem #5: Playing a hand
