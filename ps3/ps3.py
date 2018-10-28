@@ -238,12 +238,6 @@ def is_valid_word(word, hand, word_list):
                 return False
     return True
 
-
-
-
-
-
-
 #
 # Problem #5: Playing a hand
 #
@@ -254,8 +248,14 @@ def calculate_handlen(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
+    handlen = 0
+    for v in hand.values():
+        handlen += v
 
-    pass  # TO DO... Remove this line when you implement this function
+    return handlen
+
+
+
 
 def play_hand(hand, word_list):
 
@@ -288,38 +288,30 @@ def play_hand(hand, word_list):
 
     """
 
-    # BEGIN PSEUDOCODE <-- Remove this comment when you implement this function
-    # Keep track of the total score
+    total_score = 0
+    while True:
+        # Judge the length of hand
+        if calculate_handlen(hand) > 0:
+            print("Current Hand: ", end='')
+            display_hand(hand)
+            input_word = input("Enter word, or \"!!\" to indicate that you are finished: ")
+            if input_word == "!!":
+                print("Total score: {} points".format(total_score))
+                break
+            else:
+                if is_valid_word(input_word, hand, word_list):
+                    score = get_word_score(input_word, calculate_handlen(hand))
+                    total_score += score
+                    print("\"{}\" earned {} points. Total: {} points".format(input_word, score, total_score))
+                else:
+                    print("That is not a valid word. Please choose another word.")
+                hand = update_hand(hand, input_word)
+        else:
+            print("Ran out of letters. Total score: {} points".format(total_score))
+            break
+        print()
 
-    # As long as there are still letters left in the hand:
-
-        # Display the hand
-
-        # Ask user for input
-
-        # If the input is two exclamation points:
-
-            # End the game (break out of the loop)
-
-
-        # Otherwise (the input is not two exclamation points):
-
-            # If the word is valid:
-
-                # Tell the user how many points the word earned,
-                # and the updated total score
-
-            # Otherwise (the word is not valid):
-                # Reject invalid word (print a message)
-
-            # update the user's hand by removing the letters of their inputted word
-
-
-    # Game is over (user entered '!!' or ran out of letters),
-    # so tell user the total score
-
-    # Return the total score as result of function
-
+    return total_score
 
 
 #
