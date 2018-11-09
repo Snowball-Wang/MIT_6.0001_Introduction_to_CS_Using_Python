@@ -418,6 +418,7 @@ def play_game(word_list):
                 print()
 
         total_score = play_hand(hand, word_list)
+
         print("-------------")
         if not replay:
             input_replay = input("Would you like to replay the hand?")
