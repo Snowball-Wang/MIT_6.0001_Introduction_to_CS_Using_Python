@@ -94,7 +94,43 @@ class Trigger(object):
 # PHRASE TRIGGERS
 
 # Problem 2
-# TODO: PhraseTrigger
+# PhraseTrigger
+class PhraseTrigger(Trigger):
+    def __init__(self, phrase):
+        self.phrase = phrase.lower()
+
+    def is_phrase_in(self, text):
+        found = False
+        # Translate every letter in text to lowercase letter,
+        # and replace punctuation with one blank space.
+        text = text.lower()
+        for char in text:
+            if char in string.punctuation:
+                text.replace(char, ' ')
+
+        # Turn text into a list containing all elements
+        text = ' '.join(text.split())
+        text_list = text.split()
+
+        # Make a new list loc_list to record the location
+        # of letter we find in text.
+        loc_list = []
+        for w in self.phrase.split():
+            if w in text_list:
+                loc_list.append(text_list.index(w))
+            else:
+                return False
+
+        # Check out whether the location of letter we find
+        # in text are next to each other in order.
+        for i in range(1, len(loc_list)):
+            if int(loc_list[i]) - int(loc_list[i-1]) == 1:
+                found = True
+            else:
+                return False
+        return found
+
+
 
 # Problem 3
 # TODO: TitleTrigger
