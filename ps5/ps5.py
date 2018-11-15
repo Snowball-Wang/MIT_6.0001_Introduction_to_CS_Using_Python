@@ -219,10 +219,26 @@ class NotTrigger(Trigger):
 
 
 # Problem 8
-# TODO: AndTrigger
+# AndTrigger
+class AndTrigger(Trigger):
+    # T1 and T2 are triggers of type trigger as parameter passed in
+    def __init__(self, T1, T2):
+        self.T1 = T1
+        self.T2 = T2
+
+    def evaluate(self, story):
+        return self.T1.evaluate(story) and self.T2.evaluate(story)
 
 # Problem 9
-# TODO: OrTrigger
+# OrTrigger
+class OrTrigger(Trigger):
+    # T1 and T2 are triggers of type trigger as parameter passed in
+    def __init__(self, T1, T2):
+        self.T1 = T1
+        self.T2 = T2
+
+    def evaluate(self, story):
+        return self.T1.evaluate(story) or self.T2.evaluate(story)
 
 
 #======================
