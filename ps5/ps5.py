@@ -208,7 +208,15 @@ class AfterTrigger(TimeTrigger):
 # COMPOSITE TRIGGERS
 
 # Problem 7
-# TODO: NotTrigger
+# NotTrigger
+class NotTrigger(Trigger):
+    # T is a trigger of type trigger as a parameter passed in
+    def __init__(self, T):
+       self.T = T
+
+    def evaluate(self, story):
+        return not self.T.evaluate(story)
+
 
 # Problem 8
 # TODO: AndTrigger
