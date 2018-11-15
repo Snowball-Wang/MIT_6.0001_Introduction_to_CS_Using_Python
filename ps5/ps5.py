@@ -1,7 +1,11 @@
-# 6.0001/6.00 Problem Set 5 - RSS Feed Filter
-# Name:
-# Collaborators:
-# Time:
+#!/usr/bin/env python3
+#*******************************************************
+#       Filename: ps5.py
+#       Author: Snowball Wang
+#       Mail: wjq1996@mail.ustc.edu.cn
+#       Description: Solution to problem set 5
+#       Created on: 2018-11-14 17:09:58
+#*******************************************************
 
 import feedparser
 import string
@@ -106,7 +110,11 @@ class PhraseTrigger(Trigger):
         text = text.lower()
         for char in text:
             if char in string.punctuation:
-                text.replace(char, ' ')
+                #text.replace(char, ' ')
+                # it is wrong, cause text.replace()
+                # doesn't change the original text, it has to assign the
+                # copy to the new string
+                text = text.replace(char, ' ')
 
         # Turn text into a list containing all elements
         text = ' '.join(text.split())
@@ -133,7 +141,18 @@ class PhraseTrigger(Trigger):
 
 
 # Problem 3
-# TODO: TitleTrigger
+# TitleTrigger
+class TitleTrigger(PhraseTrigger):
+    def __init__(self, phrase):
+        #PhraseTrigger.__init__(self, phrase)
+        self.phrase = phrase.lower()
+
+    def evaluate(self, story):
+        if self.is_phrase_in(story.title):
+            return True
+        else:
+            return False
+
 
 # Problem 4
 # TODO: DescriptionTrigger
