@@ -144,18 +144,26 @@ class PhraseTrigger(Trigger):
 # TitleTrigger
 class TitleTrigger(PhraseTrigger):
     def __init__(self, phrase):
-        #PhraseTrigger.__init__(self, phrase)
-        self.phrase = phrase.lower()
+        PhraseTrigger.__init__(self, phrase)
 
     def evaluate(self, story):
-        if self.is_phrase_in(story.title):
+        if self.is_phrase_in(story.get_title()):
             return True
         else:
             return False
 
 
 # Problem 4
-# TODO: DescriptionTrigger
+# DescriptionTrigger
+class DescriptionTrigger(PhraseTrigger):
+    def __init__(self, phrase):
+        PhraseTrigger.__init__(self, phrase)
+
+    def evaluate(self, story):
+        if self.is_phrase_in(story.get_description()):
+            return True
+        else:
+            return False
 
 # TIME TRIGGERS
 
