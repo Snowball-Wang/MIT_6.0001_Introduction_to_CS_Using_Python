@@ -260,7 +260,9 @@ def filter_stories(stories, triggerlist):
     for story in stories:
         for trigger in triggerlist:
             if trigger.evaluate(story):
-                stories_list.append(story)
+                # Story doesn't appear before
+                if story not in stories_list:
+                    stories_list.append(story)
 
     return stories_list
 
@@ -279,6 +281,7 @@ def read_trigger_config(filename):
     """
     # We give you the code to read in the file and eliminate blank lines and
     # comments. You don't need to know how it works for now!
+    triggers_list = []
     trigger_file = open(filename, 'r')
     lines = []
     for line in trigger_file:
@@ -286,11 +289,41 @@ def read_trigger_config(filename):
         if not (len(line) == 0 or line.startswith('//')):
             lines.append(line)
 
-    # TODO: Problem 11
+    # Problem 11
     # line is the list of lines that you need to parse and for which you need
     # to build triggers
+    for elem in lines:
+        # Separate each element in lines
+        elem = elem.split(',')
+        # If the first element is ADD, put the triggers
+        # into the triggers_list
+        if elem[0] == 'ADD':
+            for trigger in elem[1:]:
+                triggers_list.append(eval(trigger))
+        else:
+            # Match the second element in elem list
+            # and instantialize the trigger
+            if elem[1] == 'TITLE':
+                exec("%s = TitleTrigger(elem[2])" %(elem[0]))
+            elif elem[1] == 'DESCRIPTION':
+                exec("%s = DescriptionTrigger(elem[2])" %(elem[0]))
+            elif elem[1] == 'BEFORE':
+                exec("%s = BeforeTrigger(elem[2])" %(elem[0]))
+            elif elem[1] == 'AFTER':
+                exec("%s = AfterTrigger(elem[2])" %(elem[0]))
+            # eval() here is used to make sure elem[2] passed in as
+            # trigger object, not str. Otherwise it will cause error
+            # info like 'str object doesn't have the attribute evaluate'
+            elif elem[1] == 'NOT':
+                exec("%s = NotTrigger(eval(elem[2]))" %(elem[0]))
+            elif elem[1] == 'AND':
+                exec("%s = AndTrigger(eval(elem[2]), eval(elem[3]))" %(elem[0]))
+            elif elem[1] == 'or':
+                exec("%s = OrTrigger(eval(elem[2]), eval(elem[3]))" %(elem[0]))
+            else:
+                continue
 
-    print(lines) # for now, print it so you see what it contains!
+    return triggers_list
 
 
 
@@ -307,8 +340,9 @@ def main_thread(master):
         triggerlist = [t1, t4]
 
         # Problem 11
-        # TODO: After implementing read_trigger_config, uncomment this line
-        # triggerlist = read_trigger_config('triggers.txt')
+        # After implementing read_trigger_config, uncomment this line
+        #triggerlist = read_trigger_config('triggers.txt')
+        triggerlist = read_trigger_config('my_own_triggers.txt')
 
         # HELPER CODE - you don't need to understand this!
         # Draws the popup window that displays the filtered stories
@@ -346,7 +380,9 @@ def main_thread(master):
             # Get stories from Yahoo's Top Stories RSS news feed
             stories.extend(process("http://news.yahoo.com/rss/topstories"))
 
+            # Filter the stories according to the triggers defined by user
             stories = filter_stories(stories, triggerlist)
+
 
             list(map(get_cont, stories))
             scrollbar.config(command=cont.yview)
