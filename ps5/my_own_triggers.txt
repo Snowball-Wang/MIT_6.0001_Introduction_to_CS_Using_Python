@@ -7,5 +7,5 @@ t2,TITLE,Trevor Noah
 // description trigger named t3
 t3,DESCRIPTION,election
 
-// the trigger list contains t1 and t2
+// the trigger list contains t1 and t2 and t3
 ADD,t1,t2,t3
