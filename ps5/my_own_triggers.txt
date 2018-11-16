@@ -1,0 +1,11 @@
+// title trigger named t1
+t1,TITLE,Morning Brief
+
+// title trigger named t2
+t2,TITLE,Trevor Noah
+
+// description trigger named t3
+t3,DESCRIPTION,election
+
+// the trigger list contains t1 and t2
+ADD,t1,t2,t3
